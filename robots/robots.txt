@@ -1,0 +1,42 @@
+# robots.txt
+# @url: https://www.diplomatie.gouv.fr
+# @generator: SPIP
+
+User-agent: *
+Allow:    /local/cache-css/
+Allow:    /local/cache-js/
+Allow:    /local/cache-gd2/
+Allow:    /local/cache-vignettes/
+Disallow: /local/
+Disallow: /ecrire/
+Disallow: /plugins-dist/
+Disallow: /lib/
+Disallow: /plugins/
+Disallow: /prive/
+Disallow: /squelettes-dist/
+Disallow: /squelettes/
+Disallow: /label_france/
+Disallow: /z_archives/
+Disallow: /actu/
+Disallow: /france/
+Disallow: /francais/
+Disallow: /Image pop - *.gif
+Disallow: /frontoffice/
+Disallow: /culture/
+Disallow: /img/ 
+Disallow: /francophonie/
+Disallow: /fildariane/static-3.7.0/css/*.css
+Disallow: /solidarité/
+Disallow: /solidarite/
+Disallow: /solidarit&eactue/
+Disallow: /solidarit&eactue;/fsp/
+Disallow: /frontoffice/
+Disallow: /infopra/
+Disallow: /label_France/
+
+Crawl-delay: 1
+
+User-agent: Twitterbot
+Disallow:
+
+Sitemap: https://www.diplomatie.gouv.fr/sitemap.xml
