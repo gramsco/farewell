@@ -20,7 +20,6 @@ fn fetch_img(url: &str, filename: &str) -> Result<()> {
 
     let mut file = std::fs::File::create(format!("{}_farewell.jpg", filename)).unwrap();
     copy(&mut body, &mut file)?;
-    println!("{url}");
     Ok(())
 }
 
