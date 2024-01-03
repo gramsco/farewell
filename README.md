@@ -4,7 +4,7 @@
 
 A basic POC in rust 🦀 to download infos of any country referenced by [the french Ministry of Foreign Affairs](https://www.diplomatie.gouv.fr/fr/conseils-aux-voyageurs/) "Conseil aux voyageurs".
 
-As of now (2024/01/03), this will only download the security map in downloads/{country_french_name}.jpg
+As of now (2024/01/03), this will only download the security map in {country_french_name}\_farewell.jpg
 
 ## How to run the script
 
@@ -12,7 +12,7 @@ As of now (2024/01/03), this will only download the security map in downloads/{c
 cargo run colombie
 ```
 
-This will create a downloads/colombie.jpg file
+This will create a colombie_farewell.jpg file
 
 ## Robots.txt
 
