@@ -1,5 +1,5 @@
 use anyhow::Result;
-use scraper::{Html, Selector};
+use scraper::{Html, Selector, Element};
 use std::env;
 use std::io::copy;
 
@@ -7,17 +7,12 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     let _ = match &args.get(1) {
         Some(country) => go_to_url(country),
-        None => {
-            println!("Please provide a country");
-            println!("ie: cargo run colombie");
-            display_list_of_countries()
-        }
+        None => display_list_of_countries()
     };
 }
 
-fn fetch_img(url: &str, filename: &str) -> Result<()> {
+fn fetch_img_by_url(url: &str, filename: &str) -> Result<()> {
     let mut body = reqwest::blocking::get(url)?;
-
     let mut file = std::fs::File::create(format!("{}_farewell.jpg", filename)).unwrap();
     copy(&mut body, &mut file)?;
     Ok(())
@@ -27,8 +22,6 @@ static BASE: &str = "https://www.diplomatie.gouv.fr/";
 static PATHNAME: &str = "fr/conseils-aux-voyageurs/conseils-par-pays-destination/";
 
 fn display_list_of_countries() -> Result<()> {
-    println!("You may use one of the following options: ");
-    println!("");
     let url = format!("{}{}", &BASE, PATHNAME);
     let body = reqwest::blocking::get(&url)?.text()?;
     let html = Html::parse_document(&body);
@@ -44,9 +37,8 @@ fn display_list_of_countries() -> Result<()> {
             }
         }
     }
-    options.chunks(8).for_each(|chunk| {
-        chunk.iter().for_each(|country| print!("{country}"));
-        println!("");
+    options.iter().for_each(|country| {
+     	println!("{country}");
     });
 
     Ok(())
@@ -55,17 +47,11 @@ fn display_list_of_countries() -> Result<()> {
 fn go_to_url(country: &str) -> Result<()> {
     let url = format!("{}{}/{country}#securite", &BASE, &PATHNAME);
     let body = reqwest::blocking::get(url)?.text()?;
-
     let html = Html::parse_document(&body);
-    let selector = Selector::parse("img").unwrap();
-
-    for img in html.select(&selector) {
-        let img_src = img.attr("src").unwrap();
-        if img_src.contains(country) {
-            let full_url = format!("https://www.diplomatie.gouv.fr/{img_src}");
-            fetch_img(&full_url, country)?;
-        }
-    }
-
-    Ok(())
+    let mediabox_selector = Selector::parse(".mediabox").unwrap();
+    let mediabox = html.select(&mediabox_selector).nth(0).expect("Mediabox not found.");
+    let img = mediabox.first_element_child().expect("No image in the mediabox");
+    let img_src = img.attr("src").expect("There should be a src to this image. I'm smart, I know html.");
+    let full_url = format!("https://www.diplomatie.gouv.fr/{img_src}");
+    fetch_img_by_url(&full_url, country)
 }
